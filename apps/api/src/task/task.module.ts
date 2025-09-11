@@ -1,7 +1,7 @@
 import { Logger, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { CreateTaskUseCase } from '@task/application/create/task.create.usecase';
+import { CreateTaskUseCase, FindByIdTaskUseCase } from '@task/application';
 import { Task } from '@task/domain/task';
 import { TaskRepository } from '@task/domain/task.repository';
 import { TaskMongoRepository } from '@task/infrastructure/mongo/task.mongo.repository';
@@ -16,9 +16,10 @@ import { TasksController } from './infrastructure/http/task.controller';
   controllers: [TasksController],
   providers: [
     Logger,
-    CreateTaskUseCase,
     TaskMongoRepository,
     { provide: TaskRepository, useExisting: TaskMongoRepository },
+    CreateTaskUseCase,
+    FindByIdTaskUseCase,
   ],
   exports: [CreateTaskUseCase],
 })
