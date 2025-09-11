@@ -23,25 +23,17 @@ export class CustomError extends Error {
     const logger = new Logger('CustomError');
     logger.error(error);
 
-    if (error instanceof CustomError) {
-      return error.toHTTP();
-    }
-
-    return new HttpException(
-      (error as Error).message || 'Internal server error',
-      HttpStatus.BAD_REQUEST,
-    );
+    const httpCode = (error as CustomError).httpCode || HttpStatus.BAD_REQUEST;
+    const msg =
+      (error as CustomError).message ||
+      ((error as CustomError).httpCode && 'Undefined error') ||
+      'Internal server error';
+    debugger;
+    return new HttpException(msg, httpCode);
   }
 
   toText(): string {
     return `${Number(this.httpCode || HttpStatus.BAD_REQUEST)} - ${this.message || 'Undefined error'}`;
-  }
-
-  toHTTP(): HttpException {
-    return new HttpException(
-      this.message || 'Undefined error',
-      Number(this.httpCode || HttpStatus.BAD_REQUEST),
-    );
   }
 }
 

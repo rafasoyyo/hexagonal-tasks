@@ -10,9 +10,8 @@ import {
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 import { CustomError } from '@shared/utils/errorHandler';
+import { CreateTaskUseCase, FindByIdTaskUseCase } from '@task/application';
 import { CreateTaskDto } from '@task/application/create/task.create.dto';
-import { CreateTaskUseCase } from '@task/application/create/task.create.usecase';
-import { FindByIdTaskUseCase } from '@task/application/findById/task.findById.usecase';
 import { TaskResponse } from '@task/domain/task';
 
 @Controller('tasks')
