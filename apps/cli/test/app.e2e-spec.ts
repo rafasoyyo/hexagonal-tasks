@@ -1,6 +1,6 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import { Test, TestingModule } from '@nestjs/testing';
+import request from 'supertest';
 import { CliModule } from './../src/cli.module';
 
 describe('CliController (e2e)', () => {
