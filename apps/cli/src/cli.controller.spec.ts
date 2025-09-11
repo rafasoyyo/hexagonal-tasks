@@ -16,7 +16,7 @@ describe('CliController', () => {
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(cliController.getHello()).toBe('Hello World!');
+      expect(cliController.getHello()).toBe('Hello World CLI!');
     });
   });
 });
