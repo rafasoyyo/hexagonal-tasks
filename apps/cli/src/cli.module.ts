@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { CliController } from './cli.controller';
-import { CliService } from './cli.service';
+
+import { BasicModule } from './basic/infrastructure/cli/basic.module';
 
 @Module({
-  imports: [],
-  controllers: [CliController],
-  providers: [CliService],
+  imports: [BasicModule],
+  controllers: [],
+  providers: [],
 })
-export class CliModule {}
+export class CLIModule {}
