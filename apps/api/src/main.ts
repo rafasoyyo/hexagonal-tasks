@@ -9,10 +9,10 @@ async function bootstrap() {
   const configService: ConfigService = app.get(ConfigService);
 
   const config = new DocumentBuilder()
-    .setTitle('Tasks example')
-    .setDescription('The tasks API description')
+    .setTitle('Tasks API')
+    .setDescription('Tasks management from API, web, Kafka and/or CLI')
     .setVersion('1.0')
-    .addTag('Tasks')
+    // .addTag('Tasks')
     .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);

@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { BasicService } from './basic/application/basic.service';
-import { BasicController } from './basic/infrastructure/http/basic.controller';
+import { BasicModule } from './basic/basic.module';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -15,8 +15,10 @@ import { BasicController } from './basic/infrastructure/http/basic.controller';
         uri: cfg.get<string>('MONGO_URI', 'mongodb://localhost:27017/tasks'),
       }),
     }),
+    BasicModule,
+    TaskModule,
   ],
-  controllers: [BasicController],
-  providers: [BasicService],
+  controllers: [],
+  providers: [],
 })
 export class ApiModule {}

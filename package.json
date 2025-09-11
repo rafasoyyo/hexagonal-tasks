@@ -80,7 +80,11 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/apps/"
-    ]
+      "<rootDir>/apps/",
+      "<rootDir>/src/"
+    ],
+    "moduleNameMapper": {
+      "^@task(|/.*)$": "<rootDir>/src/contexts/task/$1"
+    }
   }
 }
