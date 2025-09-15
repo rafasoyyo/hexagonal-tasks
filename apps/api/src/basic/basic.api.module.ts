@@ -9,4 +9,4 @@ import { BasicController } from './infrastructure/http/basic.controller';
   providers: [Logger, BasicService],
   exports: [],
 })
-export class BasicModule {}
+export class BasicAPIModule {}

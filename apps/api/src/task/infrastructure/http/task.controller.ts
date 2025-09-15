@@ -10,19 +10,26 @@ import {
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 import { CustomError } from '@shared/utils/errorHandler';
-import { CreateTaskUseCase, FindByIdTaskUseCase } from '@task/application';
+import {
+  CreateTaskUseCase,
+  DeleteTaskUseCase,
+  FindByIdTaskUseCase,
+  FindTasksListUseCase,
+} from '@task/application';
 import { CreateTaskDto } from '@task/application/create/task.create.dto';
 import { TaskResponse } from '@task/domain/task';
 
 @Controller('tasks')
 export class TasksController {
   constructor(
-    private readonly findByIdTaskUseCase: FindByIdTaskUseCase,
     private readonly createTaskUseCase: CreateTaskUseCase,
+    private readonly deleteTaskUseCase: DeleteTaskUseCase,
+    private readonly findTasksListUseCase: FindTasksListUseCase,
+    private readonly findByIdTaskUseCase: FindByIdTaskUseCase,
   ) {}
 
   @ApiOperation({ summary: 'Find a task', tags: ['Tasks'] })
-  @ApiResponse({ status: 201, description: 'Found task', type: CreateTaskDto })
+  @ApiResponse({ status: 200, description: 'Found task', type: CreateTaskDto })
   @ApiResponse({ status: 404, description: 'Task not found.' })
   @Get(':id')
   async getTask(@Param('id') id: string): Promise<TaskResponse> {
@@ -33,9 +40,20 @@ export class TasksController {
     }
   }
 
+  @ApiOperation({ summary: 'Find all tasks', tags: ['Tasks'] })
+  @ApiResponse({
+    status: 200,
+    description: 'Found tasks',
+    type: CreateTaskDto,
+    isArray: true,
+  })
   @Get()
-  getTasksList(): string {
-    return 'Hello World';
+  async getTasksList(): Promise<TaskResponse[]> {
+    try {
+      return await this.findTasksListUseCase.execute();
+    } catch (error) {
+      throw CustomError.toHTTPResponse(error);
+    }
   }
 
   @ApiOperation({ summary: 'Create task', tags: ['Tasks'] })
@@ -66,8 +84,14 @@ export class TasksController {
     return 'Hello World';
   }
 
-  @Delete()
-  deleteTask(): string {
-    return 'Hello World';
+  @ApiOperation({ summary: 'Delete a tasks', tags: ['Tasks'] })
+  @ApiResponse({ status: 200, description: 'Deleted task' })
+  @Delete(':id')
+  async deleteTask(@Param('id') id: string): Promise<void> {
+    try {
+      return await this.deleteTaskUseCase.execute(id);
+    } catch (error) {
+      throw CustomError.toHTTPResponse(error);
+    }
   }
 }

@@ -12,6 +12,7 @@ import { ApiModule } from './api.module';
 async function bootstrap() {
   const app = await NestFactory.create(ApiModule);
   const configService: ConfigService = app.get(ConfigService);
+  app.setGlobalPrefix('api');
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -33,12 +34,12 @@ async function bootstrap() {
     .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, documentFactory);
+  SwaggerModule.setup('/api/docs', app, documentFactory);
 
-  const port = configService.get<number>('PORT', 3000);
+  const port = configService.get<number>('API_PORT', 3001);
   await app.listen(port);
-  console.log(`Application is running on: http://localhost:${port}`);
-  console.log(`Swagger is running on: http://localhost:${port}/docs`);
+  console.log(`API-Rest application is running on: http://localhost:${port}`);
+  console.log(`Swagger is running on: http://localhost:${port}/api/docs`);
 }
 
 bootstrap();

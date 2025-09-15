@@ -28,8 +28,12 @@ export class CustomError extends Error {
       (error as CustomError).message ||
       ((error as CustomError).httpCode && 'Undefined error') ||
       'Internal server error';
-    debugger;
     return new HttpException(msg, httpCode);
+  }
+
+  static toCLIResponse(error: any): void {
+    const logger = new Logger('CustomError');
+    logger.error(error);
   }
 
   toText(): string {

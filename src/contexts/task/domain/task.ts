@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 export enum TaskStatus {
   PENDING = 'pending',
   IN_PROGRESS = 'in-progress',
@@ -29,8 +31,11 @@ export class Task {
 
   defaultStatus: TaskStatus = TaskStatus.PENDING;
 
-  constructor(properties: TaskPrimitives) {
-    this.id = properties.id || crypto.randomUUID();
+  constructor(properties: TaskPrimitives & { _id?: Types.ObjectId }) {
+    const id = properties.id || properties._id?.toString();
+    if (id) {
+      this.id = id;
+    }
     this.title = properties.title;
     this.description = properties.description;
     this.status = properties.status || this.defaultStatus;

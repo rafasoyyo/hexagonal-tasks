@@ -1,6 +1,6 @@
 import { Logger, Module } from '@nestjs/common';
 
-import { BasicCommand } from './basic.command';
+import { BasicCommand } from './infrastructure/cli/basic.command';
 
 @Module({
   providers: [Logger, BasicCommand],

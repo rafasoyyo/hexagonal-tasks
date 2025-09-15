@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 
+import { CustomError, CustomErrorTypes } from '@shared/utils/errorHandler';
 import { Task } from '../../domain/task';
 import { TaskRepository } from '../../domain/task.repository';
 import { TaskDocument } from './task.mongo.schema';
@@ -29,7 +30,7 @@ export class TaskMongoRepository implements TaskRepository {
       task,
       {
         new: true,
-      }
+      },
     );
 
     return updatedTaskDoc
@@ -49,6 +50,10 @@ export class TaskMongoRepository implements TaskRepository {
   }
 
   async findById(taskId: string): Promise<Task | null> {
+    if (!mongoose.isValidObjectId(taskId)) {
+      throw new CustomError(CustomErrorTypes.INVALID_ID);
+    }
+
     const foundTaskDoc = await this.taskModel.findById(taskId);
 
     return foundTaskDoc

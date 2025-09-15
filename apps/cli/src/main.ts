@@ -10,6 +10,14 @@ async function bootstrap() {
     timestamp: false,
   });
 
-  await CommandFactory.run(CLIModule, logger);
+  await CommandFactory.runWithoutClosing(CLIModule, {
+    logger,
+    abortOnError: false,
+    cliName: 'rafa',
+    errorHandler: (err) => {
+      console.error('custom error');
+      process.exit(0); // this could also be a 0 depending on how you want to handle the exit code
+    },
+  });
 }
 bootstrap();

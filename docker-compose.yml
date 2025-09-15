@@ -1,0 +1,69 @@
+version: '3.8'
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: correoelectronicoderafa
+      POSTGRES_PASSWORD: correoelectronicoderafa@gmail.com
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  pgadmin:
+    container_name: pg4admin
+    image: dpage/pgadmin4:latest
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: correoelectronicoderafa@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: correoelectronicoderafa
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+  redis:
+    container_name: redis
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/var/lib/redis
+  web:
+    container_name: web
+    build:
+      dockerfile: ./apps/web/web.dockerfile
+    env_file: .env.docker
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongo
+      - redis
+      - postgres
+  api:
+    container_name: api
+    build:
+      dockerfile: ./apps/api/api.dockerfile
+    env_file: .env.docker
+    ports:
+      - '3001:3001'
+    depends_on:
+      - mongo
+      - redis
+      - postgres
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+  redis_data:
+  mongo_data:

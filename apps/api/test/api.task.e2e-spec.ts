@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
@@ -41,6 +42,45 @@ describe('AppController (e2e)', () => {
             message: 'Task not found',
           });
         });
+    });
+  });
+
+  describe('/ (POST)', () => {
+    it('Invalid body should return an error', () => {
+      return request(app.getHttpServer())
+        .post('/tasks')
+        .send({})
+        .expect(400)
+        .expect((res) => {
+          expect(res.body).toEqual({
+            statusCode: 400,
+            message:
+              'Task validation failed: title: Path `title` is required., description: Path `description` is required.',
+          });
+        });
+    });
+
+    it('Valid request should return the task', () => {
+      const title = `Test task. ${Date.now()}`;
+      return (
+        request(app.getHttpServer())
+          .post('/tasks')
+          .send({
+            title,
+            description: 'Test description',
+          })
+          // .expect(201)
+          .expect((res) => {
+            expect(res.body).toMatchObject({
+              id: expect.any(String),
+              title: title,
+              description: 'Test description',
+              status: 'pending',
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+            });
+          })
+      );
     });
   });
 });

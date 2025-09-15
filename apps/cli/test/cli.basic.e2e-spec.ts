@@ -5,7 +5,7 @@ import { CommandTestFactory } from 'nest-commander-testing';
 import { BasicCommand } from '../src/basic/infrastructure/cli/basic.command';
 import { CLIModule } from '../src/cli.module';
 
-describe('Task Command', () => {
+describe('Basic CLI commands', () => {
   let commandInstance: TestingModule;
   let basicCommand: BasicCommand;
 
